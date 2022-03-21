@@ -2,85 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePortfolioRequest;
-use App\Http\Requests\UpdatePortfolioRequest;
-use App\Models\Portfolio;
+use App\Models\portfolio;
+use Illuminate\Http\Request;
 
-class PortfolioController extends Controller
+class portfolioController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function index(){
+        $portfolios = portfolio::all();
+        $page = 'portfolio';
+        return view("backoffice.portfolio.all",compact("portfolios", 'page'));
+    }
+    public function destroy($id){
+        $portfolio = portfolio::find($id);
+        $portfolio->delete();
+
+        return redirect()->back();
+   }
+    public function edit($id){
+        $portfolio = portfolio::find($id);
+        $page = 'portfolio';
+        return view("backoffice.portfolio.edit",compact("portfolio", 'page'));
+    }
+    public function update($id, Request $request){
+        $portfolio = portfolio::find($id);
+        $portfolio->image = $request->image;
+        $portfolio->categorie = $request->categorie;
+        $portfolio ->updated_at=now();
+        $portfolio->save();
+        return redirect()->route("portfolio");
+       }
+       public function create(){
+        $page = 'portfolio';
+        return view("backoffice.portfolio.create", compact('page'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(Request $request)
     {
-        //
+        $portfolio = new portfolio();
+        $portfolio->image = $request->image;
+        $portfolio->categorie = $request->categorie;
+        $portfolio ->updated_at=now();
+        $portfolio->save();
+        return redirect()->route("portfolio");
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StorePortfolioRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StorePortfolioRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Portfolio  $portfolio
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Portfolio $portfolio)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Portfolio  $portfolio
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Portfolio $portfolio)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdatePortfolioRequest  $request
-     * @param  \App\Models\Portfolio  $portfolio
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdatePortfolioRequest $request, Portfolio $portfolio)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Portfolio  $portfolio
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Portfolio $portfolio)
-    {
-        //
-    }
 }

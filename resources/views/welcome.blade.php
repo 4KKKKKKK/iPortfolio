@@ -15,7 +15,7 @@
     @include('partial.service')
     @include('partial.testimonials')
     @include('partial.contact')
-  </main><!-- End #main -->
+  </main>
 
 @include('partial.footer')
 @endsection

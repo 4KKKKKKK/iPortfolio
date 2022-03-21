@@ -2,85 +2,50 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreServiceRequest;
-use App\Http\Requests\UpdateServiceRequest;
 use App\Models\Service;
+use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function index(){
+        $services = Service::all();
+        $page = 'service';
+        return view("backoffice.service.all",compact("services", 'page'));
+    }
+    public function destroy($id){
+        $service = Service::find($id);
+        $service->delete();
+
+        return redirect()->back();
+   }
+    public function edit($id){
+        $service = Service::find($id);
+        $page = 'service';
+        return view("backoffice.service.edit",compact("service"));
+    }
+    public function update($id, Request $request){
+        $service = Service::find($id);
+        $service->logo = $request->logo;
+        $service->titre = $request->titre;
+        $service->texte = $request->texte;
+        $service ->updated_at=now();
+        $service->save();
+        return redirect()->route("service");
+       }
+       public function create(){
+        $page = 'service';
+        return view("backoffice.service.create", compact('page'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store (Request $request)
     {
-        //
-    }
+        $service = new Service();
+        $service->logo = $request->logo;
+        $service->titre = $request->titre;
+        $service->texte = $request->texte;
+        $service ->updated_at=now();
+        $service->save();
+        return redirect()->route("service");
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreServiceRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreServiceRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Service  $service
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Service $service)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Service  $service
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Service $service)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateServiceRequest  $request
-     * @param  \App\Models\Service  $service
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateServiceRequest $request, Service $service)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Service  $service
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Service $service)
-    {
-        //
     }
 }

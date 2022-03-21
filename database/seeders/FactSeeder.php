@@ -14,6 +14,6 @@ class FactSeeder extends Seeder
      */
     public function run()
     {
-        //
+       
     }
 }

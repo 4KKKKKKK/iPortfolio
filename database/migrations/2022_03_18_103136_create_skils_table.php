@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('skils', function (Blueprint $table) {
             $table->id();
+            $table->integer('percentage');
+            $table->string('language');
             $table->timestamps();
         });
     }

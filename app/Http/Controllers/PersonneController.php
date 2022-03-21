@@ -15,7 +15,9 @@ class PersonneController extends Controller
      */
     public function index()
     {
-        //
+        $personnes = Personne::all();
+        $page = 'personne';
+        return view("backoffice.personne.all", compact("personnes", 'page'));
     }
 
     /**
@@ -25,7 +27,8 @@ class PersonneController extends Controller
      */
     public function create()
     {
-        //
+        $page = 'personne';
+        return view("backoffice.personne.create", 'page');
     }
 
     /**
@@ -36,7 +39,20 @@ class PersonneController extends Controller
      */
     public function store(StorePersonneRequest $request)
     {
-        //
+        $personne = new Personne();
+        $personne->nom = $request->nom;
+        $personne->prenom = $request->prenom;
+        $personne->dob = $request->dob;
+        $personne->website = $request->website;
+        $personne->phoneNumber = $request->phoneNumber;
+        $personne->degree = $request->degree;
+        $personne->email = $request->email;
+        $personne->freelance = $request->freelance;
+        $personne->city = $request->city;
+        $personne->age = $request->age;
+        $personne ->updated_at=now();
+        $personne->save();
+        return redirect()->route("personne"); 
     }
 
     /**
@@ -56,9 +72,11 @@ class PersonneController extends Controller
      * @param  \App\Models\Personne  $personne
      * @return \Illuminate\Http\Response
      */
-    public function edit(Personne $personne)
+    public function edit($id)
     {
-        //
+        $personne = Personne::find($id);
+        $page = 'personne';
+        return view("backoffice.personne.edit",compact("personne", 'page'));
     }
 
     /**
@@ -68,9 +86,22 @@ class PersonneController extends Controller
      * @param  \App\Models\Personne  $personne
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePersonneRequest $request, Personne $personne)
+    public function update(UpdatePersonneRequest $request, Personne $id)
     {
-        //
+        $personne = Personne::find($id);
+        $personne->nom = $request->nom;
+        $personne->prenom = $request->prenom;
+        $personne->dob = $request->dob;
+        $personne->website = $request->website;
+        $personne->phoneNumber = $request->phoneNumber;
+        $personne->degree = $request->degree;
+        $personne->email = $request->email;
+        $personne->freelance = $request->freelance;
+        $personne->city = $request->city;
+        $personne->age = $request->age;
+        $personne ->updated_at=now();
+        $personne->save();
+        return redirect()->route("personne");
     }
 
     /**
@@ -79,8 +110,10 @@ class PersonneController extends Controller
      * @param  \App\Models\Personne  $personne
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Personne $personne)
+    public function destroy($id)
     {
-        //
+        $personne = Personne::find($id);
+        $personne->delete();
+        return redirect()->back();
     }
 }
